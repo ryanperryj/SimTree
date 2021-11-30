@@ -1,17 +1,25 @@
 #include "Node.h"
-#include <iostream>
 
 
 int main() {
+	Node a("a");
 
-	Node p(0);
-	Node c1(&p), c2(&p);
+	Node c("c");
+	a.AddSubTreeHeadNode(&c);
+	Node g("g");
+	Node h("h");
+	c.AddSubTreeHeadNode(&g);
+	c.AddSubTreeHeadNode(&h);
 
-	std::printf("p: %p c1: %p c2 %p\n", &p, &c1, &c2);
+	Node b("b", &c);
+	Node e("e");
+	Node f("f");
+	b.AddSubTreeHeadNode(&e);
+	b.AddSubTreeHeadNode(&f);
+	Node d("d", std::vector<Node*>({ &e, &f }));
 
-	p.Process();
 
-	// c1, c2, p
+	a.Process();
 
 	return 0;
 }
