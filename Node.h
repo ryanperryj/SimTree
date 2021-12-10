@@ -20,7 +20,6 @@ public:
 	Node(std::string _label, Node* _parentNode, std::vector<Node*> _downstreamNodes);
 
 	void Propagate();
-	virtual void GetInputs();
 	virtual void Process() = 0;
 
 	void AddUpstreamNode(Node* _upstreamNode);

@@ -26,17 +26,14 @@ void Node::Propagate() {
 		return;
 	processedThisFrame = true;
 
-	//std::cout << "Node " << label << " propogated.\n";
+	//std::cout << "Node " << label << " propagated.\n";
 	for (std::vector<Node*>::iterator i = upstreamNodes.begin(); i != upstreamNodes.end(); i++)
 		(*i)->Propagate();
-	this->GetInputs();
 	for (std::vector<Node*>::iterator i = subTreeHeadNodes.begin(); i != subTreeHeadNodes.end(); i++)
 		(*i)->Propagate();
 
 	this->Process();
 }
-
-void Node::GetInputs() {}
 
 void Node::AddUpstreamNode(Node* _node) {
 	upstreamNodes.push_back(_node);

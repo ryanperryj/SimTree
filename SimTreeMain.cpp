@@ -1,133 +1,98 @@
-#include "Node.h"
+#include "Blocks.h"
+#include <fstream>
 
-class A : public Node {
-private:
-
-public:
-	using Node::Node;
-
-	void GetInputs() {
-		std::cout << label << " inputs got.\n";
-	}
-
-	void Process() {
-		std::cout << label << " processed.\n";
-	}
+struct InputStruct {
+	float tKey;
+	int simRootInput;
+	float plantInput;
 };
 
-class B : public Node {
-public:
-	using Node::Node;
-
-	void GetInputs() {
-		std::cout << label << " inputs got.\n";
-	}
-
-	virtual void Process() {
-
-		std::cout << label << " processed.\n";
-	}
-};
-
-class C : public Node {
-public:
-	using Node::Node;
-
-	void GetInputs() {
-		std::cout << label << " inputs got.\n";
-	}
-
-	virtual void Process() {
-
-		std::cout << label << " processed.\n";
-	}
-};
-
-class D : public Node {
-public:
-	using Node::Node;
-
-	void GetInputs() {
-		std::cout << label << " inputs got.\n";
-	}
-
-	virtual void Process() {
-
-		std::cout << label << " processed.\n";
-	}
-};
-
-class E : public Node {
-public:
-	using Node::Node;
-
-	void GetInputs() {
-		std::cout << label << " inputs got.\n";
-	}
-
-	virtual void Process() {
-
-		std::cout << label << " processed.\n";
-	}
-};
-
-class F : public Node {
-public:
-	using Node::Node;
-
-	void GetInputs() {
-		std::cout << label << " inputs got.\n";
-	}
-
-	virtual void Process() {
-
-		std::cout << label << " processed.\n";
-	}
-};
-
-class G : public Node {
-public:
-	using Node::Node;
-
-	void GetInputs() {
-		std::cout << label << " inputs got.\n";
-	}
-
-	virtual void Process() {
-
-		std::cout << label << " processed.\n";
-	}
-};
-
-class H : public Node {
-public:
-	using Node::Node;
-
-	void GetInputs() {
-		std::cout << label << " inputs got.\n";
-	}
-
-	virtual void Process() {
-
-		std::cout << label << " processed.\n";
-	}
-};
+void ReadInputFile(InputStruct& inputStruct, std::string inputFileName);
 
 int main() {
-	Node* a = new A("a", 0);
+	std::string inputFileName = "InputFile1.csv";
 
-	Node* c = new B("c", a);
-	Node* g = new G("g", c);
-	Node* h = new H("h", c);
 
-	Node* b = new B("b", a, c);
-	Node* e = new E("e", b);
-	Node* f = new F("f", b);
-	Node* d = new D("d", b, std::vector<Node*>({e, f}));
 
-	a->Propagate();
+	SimRoot simRoot("SimRoot", 0);
+	Claw claw("Claw", &simRoot);
+	Plant plant("Plant", &simRoot, &claw);
+	std::vector<Node*> allNodes{&simRoot, &claw, &plant};
+
+	const float dt = .1;
+	const float tFinal = 10;
+	const int nSteps = tFinal / dt + 1;
+	InputStruct inputStruct;
+	ReadInputFile(inputStruct, inputFileName);
+	for (int i = 0; i < nSteps; i++) {
+		float t = i * dt;
+
+		// update inputs
+		if (t == inputStruct.tKey) {
+			simRoot.SetInputs(inputStruct.simRootInput);
+			plant.SetInputs(inputStruct.plantInput);
+			ReadInputFile(inputStruct, inputFileName);
+		}
+
+
+		simRoot.Propagate();
+	}
+
 
 	std::cin.get();
 
 	return 0;
+}
+
+void ReadInputFile(InputStruct& inputStruct, std::string inputFileName) {
+	// assigns the values of inputStruct to the next line in the given csv file each time it is called
+	static bool first = true;
+	static std::ifstream inputFile(inputFileName);
+
+	if (inputFile.eof())
+		return;
+	
+	if (!inputFile) {
+		std::cerr << inputFileName << " could not be opened!\n";
+		exit(1);
+	}
+
+	// skip the header on the first function call
+	char c;
+	if (first) {
+		do {
+			inputFile.get(c);
+		}
+		while (c != '\n');
+	}
+
+	// loop through line and set each struct value if there is one
+	int column = 1;
+	std::string s = "";
+	do {
+		inputFile.get(c);
+		if (c != ',' && c != '\n' && int(c) >= 0)
+			s += c;
+		else {
+			if (s != "") {
+				switch (column) {
+				case 1:
+					inputStruct.tKey = std::stof(s);
+					break;
+				case 2:
+					inputStruct.simRootInput = std::stoi(s);
+					break;
+				case 3:
+					inputStruct.plantInput = std::stof(s);
+					break;
+				}
+			}
+			column++;
+			s = "";
+		}
+	}
+	while (c != '\n' && !inputFile.eof());
+
+	first = false;
+	return;
 }
