@@ -141,14 +141,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Node.cpp" />
+    <ClCompile Include="PendulumModel.cpp" />
     <ClCompile Include="SimTreeMain.cpp" />
     <ClCompile Include="Simulation.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Blocks.h" />
+    <ClInclude Include="PendulumModel.h" />
     <ClInclude Include="Model.h" />
-    <ClInclude Include="Node.h" />
     <ClInclude Include="Simulation.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

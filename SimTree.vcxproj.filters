@@ -14,18 +14,15 @@
     <ClCompile Include="SimTreeMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Node.cpp">
+    <ClCompile Include="Simulation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Simulation.cpp">
+    <ClCompile Include="PendulumModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Node.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Blocks.h">
+    <ClInclude Include="PendulumModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Simulation.h">

@@ -1,15 +1,15 @@
 #include "Simulation.h"
 #include <fstream>
 
-Simulation::Simulation(Model* _model, std::string _parameterFileName, std::string _inputFileName, std::string _outputFileName)
+Simulation::Simulation(Model* _model, std::string _paramFileName, std::string _inputFileName, std::string _outputFileName)
 	: model(_model),
-	parameterFileName(_parameterFileName), 
+	paramFileName(_paramFileName), 
 	inputFileName(_inputFileName), 
 	outputFileName(_outputFileName) {}
 
 void Simulation::Simulate(const float tFinal, const float dt) {
 
-	ReadParameterFile();
+	ReadParamFile();
 
 	float tNextInput = ReadInputFile();
 
@@ -22,43 +22,43 @@ void Simulation::Simulate(const float tFinal, const float dt) {
 			std::cout << "t: " << t << "\n";
 			tNextInput = ReadInputFile();
 		}
-		//model->Process();
+		model->Process(t);
 		WriteOutputFile(t);
 	}
 }
 
-void Simulation::ReadParameterFile() {
-	std::ifstream parameterFile(parameterFileName);
-	if (!parameterFile) {
-		std::cerr << parameterFileName << " could not be opened!\n";
+void Simulation::ReadParamFile() {
+	std::ifstream paramFile(paramFileName);
+	if (!paramFile) {
+		std::cerr << paramFileName << " could not be opened!\n";
 		exit(1);
 	}
 
 	// skip the header
 	char c;
 	do {
-		parameterFile.get(c);
+		paramFile.get(c);
 	}
 	while (c != '\n');
 
 	static int column = 0;
 	std::string s = "";
 	do {
-		parameterFile.get(c);
+		paramFile.get(c);
 		if (c != ',' && c != '\n')
 			s += c;
 		else {
 			if (s != "")
-				model->SetParameter(column, s); 
+				model->SetParam(column, s); 
 			else {
-				std::cerr << "Must give a value for a parameter!\n";
+				std::cerr << "Must give a value for a param!\n";
 				exit(1);
 			}
 			column++;
 			s = "";
 		}
 	}
-	while (c != '\n' && !parameterFile.eof());
+	while (c != '\n' && !paramFile.eof());
 }
 
  float Simulation::ReadInputFile() {

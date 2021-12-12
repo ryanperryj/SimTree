@@ -1,17 +1,21 @@
 #pragma once
-#include "Node.h"
+#include <vector>
+#include <string>
+#include <iostream>
 
-class Model : public Node {
+class Model {
 protected:
-	std::vector<std::string> parameterNames;
+	std::vector<std::string> paramNames;
 	std::vector<std::string> inputNames;
 	std::vector<std::string> outputNames;
 public:
-	virtual void SetParameter(int index, std::string valueString) = 0;
+	virtual void Process(float t) = 0;
+
+	virtual void SetParam(int index, std::string valueString) = 0;
 	virtual void SetInput(int index, std::string valueString) = 0;
 	virtual std::string GetOutput(int index) = 0;
 
-	std::vector<std::string> GetParameterNames() { return parameterNames; }
+	std::vector<std::string> GetParamNames() { return paramNames; }
 	std::vector<std::string> GetInputNames() { return inputNames; }
 	std::vector<std::string> GetOutputNames() { return outputNames; }
 };
