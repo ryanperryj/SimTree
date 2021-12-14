@@ -7,6 +7,7 @@ Simulation::Simulation(Model& _model, const bfs::path& _paramFilePath, const bfs
 	outputFilePath(_outputFilePath) {}
 
 void Simulation::Simulate(const float tFinal, const float dt) {
+	ConfirmFiles();
 	ReadParamFile();
 
 	const int nSteps = int(tFinal / dt) + 1;
@@ -18,6 +19,32 @@ void Simulation::Simulate(const float tFinal, const float dt) {
 
 		model.Process(t, dt);
 		WriteOutputFile(t);
+	}
+}
+
+void Simulation::ConfirmFiles() {
+	int choice;
+	if (bfs::exists(outputFilePath)) {
+		std::cout << "\nAre you sure you want to overwrite " << outputFilePath << "? Enter 1 for yes, 2 for no: ";
+		std::cin >> choice;
+		switch (choice) {
+		case 1:
+			break;
+		case 2:
+			exit(1);
+		default:
+			std::cerr << "Not an option!\n";
+			exit(1);
+		}
+	}
+	if (!bfs::exists(paramFilePath) || (!bfs::exists(inputFilePath) && model.HasInputs())) {
+		if (!bfs::exists(paramFilePath))
+			CreateTemplateParamFile();
+		if (!bfs::exists(inputFilePath) && model.HasInputs())
+			CreateTemplateInputFile();
+
+		std::cout << "\nEdit, save, and close new template files, then enter 1: ";
+		std::cin >> choice;
 	}
 }
 
@@ -109,13 +136,16 @@ void Simulation::ReadInputFile(float t) {
 }
 
 void Simulation::WriteOutputFile(float t) {
+	static bool first = true;
+	if (first && !bfs::exists(outputFilePath))
+		std::cout << "\nCreated " << outputFilePath << ".\n";
+
 	static bfs::ofstream outputFile(outputFilePath);
 
 	auto paramNames = model.GetParamNames();
 	auto inputNames = model.GetInputNames();
 	auto outputNames = model.GetOutputNames();
 
-	static bool first = true;
 	if (first) {
 		for (auto i = paramNames.begin(); i != paramNames.end(); i++)
 			outputFile << *i << ",";
@@ -141,3 +171,39 @@ void Simulation::WriteOutputFile(float t) {
 
 	first = false;
  }
+
+void Simulation::CreateTemplateParamFile() {
+	bfs::ofstream paramFile(paramFilePath);
+
+	auto paramNames = model.GetParamNames();
+	for (auto i = paramNames.begin(); i != paramNames.end(); i++) {
+		if (i != paramNames.begin())
+			paramFile << ",";
+		paramFile << *i;
+	}
+	paramFile << "\n";
+	for (auto i = paramNames.begin(); i != paramNames.end(); i++) {
+		if (i != paramNames.begin())
+			paramFile << ",";
+		paramFile << "-";
+	}
+	paramFile << "\n";
+	
+	std::cout << "Created " << paramFilePath << " as a template.\n";
+}
+
+void Simulation::CreateTemplateInputFile() {
+	bfs::ofstream inputFile(inputFilePath);
+
+	auto inputNames = model.GetInputNames();
+	inputFile << "t";
+	for (auto i = inputNames.begin(); i != inputNames.end(); i++)
+		inputFile << "," << *i;
+	inputFile << "\n";
+	inputFile << "0";
+	for (auto i = inputNames.begin(); i != inputNames.end(); i++)
+		inputFile << "," << "-";
+	inputFile << "\n";
+
+	std::cout << "Created " << inputFilePath << " as a template.\n";
+}

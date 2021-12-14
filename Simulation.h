@@ -12,12 +12,18 @@ public:
 	void Simulate(const float tFinal) { Simulate(tFinal, 0.1f); };
 	void Simulate(const float tFinal, const float dt);
 
+	void ConfirmFiles();
+
 	// reads from paramFilePath and initializes the model data with the appropriate parameters
 	void ReadParamFile();
 	// reads from inputFilePath for the given time, and updates the model data with the appropriate inputs using a Zero-Order-Hold approach
 	void ReadInputFile(float t);
 	// writes to outputFilePath for the given time, including a header on the first call
 	void WriteOutputFile(float t);
+	// creates a template parameter file, will not be runnable
+	void CreateTemplateParamFile();
+	// creates a template input file, will not be runnable
+	void CreateTemplateInputFile();
 
 private:
 	Model& model;

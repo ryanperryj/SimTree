@@ -1,4 +1,5 @@
 t,sInput,vfInput
-0,hello,1.1 2.2 3.3
-1,how are you,7.8 -99 0
-5,goodbye,0 -4 -100.01
+0,string,3.2 3.4 5.4
+1,hello,
+2,,7.6 -90.3 8.7
+8,goodbye,

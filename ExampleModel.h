@@ -1,6 +1,7 @@
 #pragma once
 #include "Model.h"
 
+// model that shows some of the data types that are possible for parameters, inputs, and outputs
 class ExampleModel : public Model {
 public:
 	ExampleModel();

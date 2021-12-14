@@ -1,6 +1,7 @@
 #pragma once
 #include "Model.h"
 
+// models a simple pendulum with quadratic drag
 class PendulumModel : public Model {
 public:
 	PendulumModel();
@@ -15,16 +16,16 @@ public:
 
 private:
 	// hardcoded const params
-	const float g = 9.81;
-	const float c = 3;
+	const float g = 9.81f;
+	const float c = 3.0f;
 	// params
 	float m;
 	float l;
 	float theta0;
 	float thetaDot0;
-	// output and feedback variables, all feedback variables must be initialized with params in process
+	// outputs
 	float theta;
+	// internal variables
 	float thetaDot;
 	float thetaDotDot;
-	// internal variables
 };
