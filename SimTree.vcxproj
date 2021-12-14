@@ -141,14 +141,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ExampleModel.cpp" />
     <ClCompile Include="PendulumModel.cpp" />
     <ClCompile Include="SimTreeMain.cpp" />
     <ClCompile Include="Simulation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ExampleModel.h" />
     <ClInclude Include="PendulumModel.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="SignalMath.h" />
     <ClInclude Include="Simulation.h" />
+    <ClInclude Include="StringConversions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
