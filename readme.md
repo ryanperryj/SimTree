@@ -1,10 +1,6 @@
-Github: https://github.com/ryanperryj/SimTree
-
-Video:  https://pennstateoffice365-my.sharepoint.com/:v:/g/personal/rjp5603_psu_edu/EVtV1XLdPXBCqDLqxkwGh5MBR34zYiiV7cP4P_V4HYCW9g?e=llFjxU
-
 Boost: https://www.boost.org/
 
-Just build, making sure to include and link to boost, then run the executable. The program will prompt for multiple things:
+Make sure to include and link to boost, then run the executable. The program will prompt for multiple things:
 
 1. Model choice
 	Available models will be listed, select a model by just inputting it's number.
@@ -45,5 +41,3 @@ functions.
 An important design point is the fact that parameters, inputs, and outputs can be a variety of different types. This is highlighted in
 the design of the ExampleModel. Data can be ints, floats, bools, strings, vectors of these and more. This is why there is some weird 
 switch case stuff iand strings being passed around.
-
-Please look at the Github for some example files.
